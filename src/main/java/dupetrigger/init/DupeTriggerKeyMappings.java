@@ -10,6 +10,7 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 import org.lwjgl.glfw.GLFW;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
 public class DupeTriggerKeyMappings {
@@ -21,7 +22,7 @@ public class DupeTriggerKeyMappings {
             super.setDown(isDown);
             Player player = Minecraft.getInstance().player;
             if (player != null && isDownOld != isDown && isDown) {
-                DupeTrigger.PACKET_HANDLER.sendToServer(new DupeTriggerKeybindMessage(0, 0));
+                DupeTrigger.PACKET_HANDLER.send(new DupeTriggerKeybindMessage(0, 0), PacketDistributor.SERVER.noArg());
                 DupeTriggerKeybindMessage.pressAction(Minecraft.getInstance().player, 0, 0);
             }
             isDownOld = isDown;
